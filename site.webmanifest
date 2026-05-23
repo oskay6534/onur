@@ -1,0 +1,10 @@
+{
+    "name": "Onur Mert Canpolat",
+    "short_name": "Canpolat",
+    "description": "Onur Mert Canpolat biyografi sitesi.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#151922",
+    "theme_color": "#151922",
+    "lang": "tr"
+}
