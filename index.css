@@ -48,24 +48,51 @@ a {
 }
 .navbar ul {
     display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .navbar ul li {
     list-style: none;
-    margin-left: 35px;
+    margin-left: 0;
 }
 
 .navbar ul li a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 0;
     font-size: 16px;
-    font-weight: 500;
-    transition: .5s;
+    font-weight: 600;
+    color: #d8dde8;
+    cursor: pointer;
+    overflow: hidden;
+    transition: color .3s ease, text-shadow .3s ease, transform .3s ease;
+}
+
+.navbar ul li a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: #f6c85f;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform .35s ease;
 }
 
 .navbar ul li:hover a {
-    color: #7cf03d;
+    color: #f6c85f;
+    text-shadow: 0 0 12px rgba(246, 200, 95, .35);
+    transform: translateY(-2px);
 }
-.navbar ul li.active a {
-    color: #7cf03d;
+
+.navbar ul li:hover a::before {
+    transform: scaleX(1);
+    transform-origin: left;
 }
 
 .home {
@@ -73,7 +100,7 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 100vh;
+    min-height: calc(100vh - 54px);
     padding: 90px 9% 0;
     gap: 52px;
     color: #fff;
@@ -93,10 +120,24 @@ a {
     display: none;
 }
 
+.mobile-values {
+    display: none;
+}
+
 .home-info h1 {
     font-size: 52px;
     line-height: 1.1;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
+    transition: opacity .48s ease, transform .48s ease, filter .48s ease;
+}
+
+.seo-alias {
+    max-width: 760px;
+    min-height: 0;
+    margin: 0 0 14px;
+    color: #aeb7c8;
+    font-size: 14px;
+    line-height: 1.4;
     transition: opacity .48s ease, transform .48s ease, filter .48s ease;
 }
 
@@ -156,6 +197,8 @@ a {
 }
 
 .home-info.bio-exiting h1,
+.home-info.bio-exiting .seo-alias,
+.home-info.bio-exiting .mobile-values,
 .home-info.bio-exiting h2,
 .home-info.bio-exiting p {
     opacity: 0;
@@ -164,6 +207,8 @@ a {
 }
 
 .home-info.bio-entering h1,
+.home-info.bio-entering .seo-alias,
+.home-info.bio-entering .mobile-values,
 .home-info.bio-entering h2,
 .home-info.bio-entering p {
     opacity: 0;
@@ -171,6 +216,14 @@ a {
 
 .home-info.bio-entering h1 {
     animation: bio-name-in .72s ease forwards;
+}
+
+.home-info.bio-entering .seo-alias {
+    animation: bio-name-in .72s ease .04s forwards;
+}
+
+.home-info.bio-entering .mobile-values {
+    animation: bio-values-reveal 1.1s cubic-bezier(.25, .8, .2, 1) .08s forwards;
 }
 
 .home-info.bio-entering h2 {
@@ -217,6 +270,24 @@ a {
         transform: translateX(0);
         filter: blur(0);
         background-size: 100% 100%;
+    }
+}
+
+@keyframes bio-values-reveal {
+    0% {
+        opacity: 0;
+        filter: blur(2px);
+        clip-path: inset(0 100% 0 0);
+    }
+
+    18% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        filter: blur(0);
+        clip-path: inset(0 0 0 0);
     }
 }
 
@@ -434,10 +505,10 @@ a {
 .site-footer {
     position: relative;
     z-index: 2;
-    padding: 18px 9%;
+    padding: 8px 9% 16px;
     background: #151922;
     color: #8f98aa;
-    font-size: 13px;
+    font-size: 12px;
     text-align: center;
 }
 
@@ -451,6 +522,8 @@ a {
         grid-template-columns: minmax(0, 1fr) 148px;
         grid-template-areas:
             "name name"
+            "alias alias"
+            "values values"
             "title image"
             "text image"
             "actions actions";
@@ -482,6 +555,29 @@ a {
         font-size: 30px;
         line-height: 1.08;
         text-align: center;
+    }
+
+    .seo-alias {
+        grid-area: alias;
+        width: 100%;
+        margin: -2px 0 0;
+        color: #9ca6b8;
+        font-size: 12px;
+        line-height: 1.25;
+        text-align: center;
+    }
+
+    .mobile-values {
+        grid-area: values;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        width: 100%;
+        color: #f6c85f;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.2;
     }
 
     .home-img {
@@ -597,13 +693,15 @@ a {
         grid-template-columns: 1fr;
         grid-template-areas:
             "name"
+            "alias"
+            "values"
             "image"
             "title"
             "text"
             "actions";
         align-content: stretch;
         row-gap: 12px;
-        padding: 22px 18px 24px;
+        padding: 18px 18px 14px;
         overflow: hidden;
     }
 
@@ -611,6 +709,18 @@ a {
         margin: 0;
         font-size: 34px;
         line-height: 1.08;
+    }
+
+    .seo-alias {
+        margin: -4px 0 0;
+        font-size: 12px;
+    }
+
+    .mobile-values {
+        margin: -2px 0 2px;
+        gap: 6px 12px;
+        font-size: 13px;
+        text-align: center;
     }
 
     .home-info h2 {
